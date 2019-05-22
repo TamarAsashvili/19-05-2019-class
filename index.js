@@ -5,9 +5,13 @@ const app = express();
 //app.use ('/api/users', userRouter);
 
 
-app.get('/api/users/:id', (req, res, next)=>{
+app.use ('/api/users/:id', async (req, res, next)=>{
     console.log('[1] GET /api/users', req.params.id);
+    const user = sessionTable.getUser(req.session.id);
     //res.sendStatus(200);
+    if (user.id !== req.params.id) {
+        return res.sendStatus(401);
+    }
     next();
 });
 
